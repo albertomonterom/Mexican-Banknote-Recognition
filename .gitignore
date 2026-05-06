@@ -4,11 +4,13 @@
 .DS_Store
 
 # =========================
-# VSCode / JetBrains
+# VSCode / JetBrains / AI Tools
 # =========================
 .vscode/
 .idea/
 *.iml
+.claude/
+Claude/
 
 # =========================
 # Flutter / Dart
@@ -59,16 +61,16 @@ env/
 
 # Python packaging
 dist/
-build/
 *.egg-info/
 
 # =========================
 # Machine Learning
 # =========================
 
-# Large datasets
+# Large datasets (images live in Google Drive, not git)
 dataset/raw/
 dataset/augmented/
+dataset/processed/
 
 # Trained models
 *.h5
