@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mexican_banknote_recognition/constants/app_colors.dart';
-import 'package:mexican_banknote_recognition/constants/app_strings.dart';
 import 'package:mexican_banknote_recognition/models/banknote_prediction.dart';
 import 'package:mexican_banknote_recognition/providers/banknote_provider.dart';
 import 'package:mexican_banknote_recognition/screens/camera_screen.dart';
@@ -23,7 +22,7 @@ class MexicanBanknoteRecognitionApp extends StatelessWidget {
       create: (_) => BanknoteProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: AppStrings.appName,
+        title: 'Habla Billete',
         theme: ThemeData(
           brightness: Brightness.dark,
           scaffoldBackgroundColor: AppColors.background,

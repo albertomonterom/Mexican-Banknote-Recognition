@@ -42,6 +42,12 @@ class BanknoteProvider extends ChangeNotifier {
     return prediction;
   }
 
+  Future<void> repeatAnnouncement() async {
+    if (_lastPrediction != null) {
+      await _speechService.speak(_lastPrediction!.spokenLabel);
+    }
+  }
+
   void clearStatus() {
     _statusMessage = null;
     notifyListeners();

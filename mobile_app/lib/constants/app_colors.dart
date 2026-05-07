@@ -10,7 +10,10 @@ class AppColors {
   static const Color accent = Color(0xFFFFFFFF);
   static const Color onBackground = Color(0xFFFFFFFF);
   static const Color onSurface = Color(0xFFFFFFFF);
-  static const Color subtle = Color(0xFFBDBDBD);
+  static const Color subtle = Color(0xFF757575);
   static const Color success = Color(0xFF2ECC71);
   static const Color error = Color(0xFFFF6B6B);
+
+  static const Color scanning = Color(0xFF00C896);
+  static const Color scanningBg = Color(0xFF0A3D2E);
 }

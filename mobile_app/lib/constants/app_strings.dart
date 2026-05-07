@@ -1,23 +1,31 @@
 class AppStrings {
   const AppStrings._();
 
-  static const String appName = 'Mexican Banknote Recognition';
+  static const String appName = 'Habla Billete';
   static const String appSubtitle = 'Reconocimiento accesible de billetes mexicanos';
-  static const String homeTitle = 'Inicio';
-  static const String homeDescription = 'Reconoce billetes y escucha el resultado.';
-  static const String scanButton = 'Escanear billete';
-  static const String helpButton = 'Ayuda';
-  static const String backButton = 'Regresar';
-  static const String resultTitle = 'Resultado';
-  static const String resultHint = 'El resultado se muestra y se puede anunciar por voz.';
-  static const String cameraTitle = 'Cámara';
-  static const String cameraDescription = 'Simula la captura de un billete para probar el flujo.';
-  static const String captureButton = 'Simular captura';
-  static const String speakingButton = 'Anunciar resultado';
+
+  // Home
+  static const String homeTapHint = 'Toque la pantalla para escanear un billete';
+  static const String homeSemantic = 'Toque para escanear un billete';
+
+  // Camera / Scanning
+  static const String scanningAreaHint = 'Toda esta área es la cámara activa';
+  static const String scanningLabel = 'Escaneando...';
+  static const String scanningInstruction = 'Coloque el billete frente a la cámara';
+
+  // Result
+  static const String pesos = 'pesos';
+  static const String resultTapHint = 'Toque para escanear otro billete';
+  static const String resultDoubleTapHint = 'Doble toque para repetir resultado';
+
+  // Help
   static const String helpTitle = 'Ayuda';
-  static const String helpDescription = 'Usa un botón grande por pantalla y sigue las indicaciones de voz.';
-  static const String fakeResult = 'Billete de 100 pesos.';
-  static const String fakeConfidence = 'Confianza simulada';
+  static const String helpDescription = 'Usa un toque para escanear y escucha el resultado por voz.';
+
+  // Misc
   static const String loadingMessage = 'Reconociendo billete...';
   static const String unsupportedMessage = 'Reconocimiento no disponible en este momento.';
+  static const String backButton = 'Regresar';
+  static const String scanButton = 'Escanear billete';
+  static const String helpButton = 'Ayuda';
 }

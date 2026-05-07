@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 
 class AccessibilityHelper {
   const AccessibilityHelper._();
 
   static Future<void> announce(String message) async {
+    // ignore: deprecated_member_use
     await SemanticsService.announce(message, TextDirection.ltr);
   }
 
