@@ -3,7 +3,7 @@ import 'package:mexican_banknote_recognition/main.dart';
 
 void main() {
   testWidgets('home screen renders app name and tap hint', (WidgetTester tester) async {
-    await tester.pumpWidget(const MexicanBanknoteRecognitionApp());
+    await tester.pumpWidget(const HablaBilleteApp());
     expect(find.text('Habla Billete'), findsOneWidget);
     expect(find.text('Toque la pantalla para escanear un billete'), findsOneWidget);
   });

@@ -1,5 +1,5 @@
 name: mexican_banknote_recognition
-description: Accessible Flutter app for offline Mexican banknote recognition.
+description: "Habla Billete — Reconocimiento accesible de billetes mexicanos para personas con discapacidad visual."
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^6.1.2
+  flutter_tts: ^4.0.0
 
 dev_dependencies:
   flutter_test:

@@ -11,7 +11,7 @@ class BanknoteProvider extends ChangeNotifier {
     SpeechService? speechService,
   })  : _cameraService = cameraService ?? const CameraService(),
         _mlModelService = mlModelService ?? const MlModelService(),
-        _speechService = speechService ?? const SpeechService();
+        _speechService = speechService ?? SpeechService();
 
   final CameraService _cameraService;
   final MlModelService _mlModelService;
@@ -38,8 +38,18 @@ class BanknoteProvider extends ChangeNotifier {
     _statusMessage = prediction.spokenLabel;
     notifyListeners();
 
-    await _speechService.speak(prediction.spokenLabel);
+    // Speak the denomination followed by the available gestures so the user
+    // knows what to do the moment the result screen appears.
+    await _speechService.speak(
+      '${prediction.spokenLabel} '
+      'Toque para escanear otro billete. '
+      'Doble toque para repetir el resultado.',
+    );
     return prediction;
+  }
+
+  Future<void> announce(String message) async {
+    await _speechService.speak(message);
   }
 
   Future<void> repeatAnnouncement() async {
@@ -51,5 +61,11 @@ class BanknoteProvider extends ChangeNotifier {
   void clearStatus() {
     _statusMessage = null;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _speechService.stop();
+    super.dispose();
   }
 }

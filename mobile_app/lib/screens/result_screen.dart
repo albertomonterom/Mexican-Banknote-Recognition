@@ -17,76 +17,73 @@ class ResultScreen extends StatelessWidget {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Semantics(
-          label: '\$${prediction.denomination} pesos. '
+          label: 'Billete de ${prediction.denomination} pesos. '
               '${AppStrings.resultTapHint}. '
               '${AppStrings.resultDoubleTapHint}.',
+          button: true,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () =>
-                Navigator.of(context).pushReplacementNamed(AppRoutes.camera),
+            onTap: () => Navigator.of(context)
+                .pushReplacementNamed(AppRoutes.camera),
             onDoubleTap: () =>
                 context.read<BanknoteProvider>().repeatAnnouncement(),
-            child: SizedBox.expand(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const SizedBox(height: 8),
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      color: AppColors.scanningBg,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.scanning, width: 2),
+            child: ExcludeSemantics(
+              child: SizedBox.expand(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const SizedBox(height: 8),
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: AppColors.scanningBg,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: AppColors.scanning, width: 2),
+                      ),
+                      child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 40,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                  ),
-                  const SizedBox(height: 28),
-                  FittedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
-                      child: Text(
-                        '\$${prediction.denomination}',
-                        style: const TextStyle(
-                          color: AppColors.onBackground,
-                          fontSize: 80,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -2,
+                    const SizedBox(height: 28),
+                    FittedBox(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                        child: Text(
+                          '\$${prediction.denomination}',
+                          style: const TextStyle(
+                            color: AppColors.onBackground,
+                            fontSize: 80,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -2,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    AppStrings.pesos,
-                    style: TextStyle(
-                      color: AppColors.subtle,
-                      fontSize: 22,
+                    const SizedBox(height: 4),
+                    const Text(
+                      AppStrings.pesos,
+                      style: TextStyle(
+                        color: AppColors.subtle,
+                        fontSize: 22,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 56),
-                  const Text(
-                    AppStrings.resultTapHint,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.subtle,
-                      fontSize: 16,
+                    const SizedBox(height: 56),
+                    const Text(
+                      AppStrings.resultTapHint,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: AppColors.subtle, fontSize: 16),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    AppStrings.resultDoubleTapHint,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.subtle,
-                      fontSize: 16,
+                    const SizedBox(height: 8),
+                    const Text(
+                      AppStrings.resultDoubleTapHint,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: AppColors.subtle, fontSize: 16),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

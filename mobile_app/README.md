@@ -4,6 +4,21 @@ Mexican Banknote Recognition is an accessibility-first Flutter mobile applicatio
 
 This Flutter app lives inside the `mobile_app/` package of the repository monorepo.
 
+## Quick Start
+
+```bash
+cd /Users/amonterom/Documents/Mexican-Banknote-Recognition/mobile_app
+flutter pub get
+flutter doctor
+flutter devices
+```
+
+Then run by explicit target:
+
+```bash
+flutter run -d macos
+```
+
 ## Accessibility Goals
 
 - Very large touch targets
@@ -49,10 +64,69 @@ lib/
 ## Setup Instructions
 
 1. Install Flutter from the official SDK.
-2. Change into the `mobile_app/` directory.
-3. Run `flutter pub get` inside `mobile_app/`.
-4. Start the app with `flutter run` on a connected device or emulator.
-5. Replace the fake ML service with a real inference backend when the model is ready.
+2. Install Xcode for iOS support.
+3. Install Android Studio SDK/tools for Android support.
+4. Change into the `mobile_app/` directory.
+5. Run `flutter pub get`.
+6. Run `flutter doctor` and resolve any issues.
+
+## Run By Platform
+
+### macOS
+
+```bash
+flutter run -d macos
+```
+
+### iOS (physical device)
+
+1. Open `ios/Runner.xcworkspace` in Xcode.
+2. Configure `Runner` target in Signing & Capabilities with your Team.
+3. Trust developer certificate on iPhone if prompted.
+4. Run:
+
+```bash
+flutter devices
+flutter run -d <iphone_device_id>
+```
+
+### Android
+
+1. Start an emulator in Android Studio or connect an Android phone.
+2. Accept licenses if needed:
+
+```bash
+flutter doctor --android-licenses
+```
+
+3. Run:
+
+```bash
+flutter devices
+flutter run -d <android_device_id>
+```
+
+## Device Selection Rules
+
+- Prefer `flutter run -d <target>` to avoid launching on the wrong device.
+- Use `flutter devices` each time to copy the exact device id.
+- Common targets:
+  - `macos` for desktop
+  - iPhone UDID for iOS
+  - emulator/device id for Android
+
+## Troubleshooting
+
+- App installs but does not open on iPhone:
+  - Trust certificate in iPhone Settings > General > VPN & Device Management
+- Flutter cannot control Xcode:
+  - Enable permission in macOS Settings > Privacy & Security > Automation
+- Flutter local network warning:
+  - Enable terminal/IDE in macOS Settings > Privacy & Security > Local Network
+- Device disconnects during run:
+  - Keep iPhone unlocked and connected by cable
+- Build works only in Xcode but not CLI:
+  - Re-run `flutter doctor` and confirm iOS toolchain is green
 
 ## Notes
 

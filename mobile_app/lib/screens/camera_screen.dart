@@ -18,7 +18,10 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _startScan());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<BanknoteProvider>().announce('Escaneando billete.');
+      _startScan();
+    });
   }
 
   Future<void> _startScan() async {
@@ -37,25 +40,36 @@ class _CameraScreenState extends State<CameraScreen> {
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
+              // Decorative hint — excluded from VoiceOver; the initState
+              // announcement already conveys this information.
               Positioned(
                 top: 24,
                 left: 0,
                 right: 0,
-                child: Text(
-                  AppStrings.scanningAreaHint,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColors.subtle,
-                    fontSize: 16,
+                child: ExcludeSemantics(
+                  child: Text(
+                    AppStrings.scanningAreaHint,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: AppColors.subtle,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               ),
-              const _ScanningIndicator(),
+              // liveRegion: true makes VoiceOver re-read this node whenever
+              // its content changes, so state updates are announced automatically.
+              Semantics(
+                liveRegion: true,
+                label: AppStrings.scanningInstruction,
+                child: const ExcludeSemantics(child: _ScanningIndicator()),
+              ),
+              // The animated waveform is purely visual — no semantic value.
               const Positioned(
                 bottom: 48,
                 left: 0,
                 right: 0,
-                child: _ScanningWaveform(),
+                child: ExcludeSemantics(child: _ScanningWaveform()),
               ),
             ],
           ),

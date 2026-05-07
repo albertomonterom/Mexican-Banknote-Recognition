@@ -10,11 +10,11 @@ import 'package:mexican_banknote_recognition/screens/result_screen.dart';
 import 'package:mexican_banknote_recognition/utils/app_routes.dart';
 
 void main() {
-  runApp(const MexicanBanknoteRecognitionApp());
+  runApp(const HablaBilleteApp());
 }
 
-class MexicanBanknoteRecognitionApp extends StatelessWidget {
-  const MexicanBanknoteRecognitionApp({super.key});
+class HablaBilleteApp extends StatelessWidget {
+  const HablaBilleteApp({super.key});
 
   @override
   Widget build(BuildContext context) {

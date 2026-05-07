@@ -1,6 +1,6 @@
 {
-    "name": "mexican_banknote_recognition",
-    "short_name": "mexican_banknote_recognition",
+    "name": "Habla Billete",
+    "short_name": "Habla Billete",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
