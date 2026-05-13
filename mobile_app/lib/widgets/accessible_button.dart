@@ -33,7 +33,7 @@ class AccessibleButton extends StatelessWidget {
             minimumSize: const Size.fromHeight(72),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+            textStyle: const TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
           ),
           onPressed: onPressed,
           icon: Icon(icon, size: 28),

@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mexican_banknote_recognition/models/banknote_prediction.dart';
 import 'package:mexican_banknote_recognition/services/camera_service.dart';
@@ -9,7 +10,7 @@ class BanknoteProvider extends ChangeNotifier {
     CameraService? cameraService,
     MlModelService? mlModelService,
     SpeechService? speechService,
-  })  : _cameraService = cameraService ?? const CameraService(),
+  })  : _cameraService = cameraService ?? CameraService(),
         _mlModelService = mlModelService ?? const MlModelService(),
         _speechService = speechService ?? SpeechService();
 
@@ -19,27 +20,37 @@ class BanknoteProvider extends ChangeNotifier {
 
   BanknotePrediction? _lastPrediction;
   bool _isProcessing = false;
+  bool _cameraReady = false;
   String? _statusMessage;
 
   BanknotePrediction? get lastPrediction => _lastPrediction;
   bool get isProcessing => _isProcessing;
+  bool get cameraReady => _cameraReady;
   String? get statusMessage => _statusMessage;
+  CameraController? get cameraController => _cameraService.controller;
+
+  Future<void> initializeCamera() async {
+    _cameraReady = false;
+    notifyListeners();
+    await _cameraService.initialize();
+    _cameraReady = true;
+    notifyListeners();
+  }
 
   Future<BanknotePrediction> simulateRecognition() async {
     _isProcessing = true;
     _statusMessage = 'Capturando billete...';
     notifyListeners();
 
-    final String frameReference = await _cameraService.captureFakeFrame();
-    final BanknotePrediction prediction = await _mlModelService.recognizeBanknote(frameReference);
+    final String framePath = await _cameraService.captureFrame();
+    final BanknotePrediction prediction =
+        await _mlModelService.recognizeBanknote(framePath);
 
     _lastPrediction = prediction;
     _isProcessing = false;
     _statusMessage = prediction.spokenLabel;
     notifyListeners();
 
-    // Speak the denomination followed by the available gestures so the user
-    // knows what to do the moment the result screen appears.
     await _speechService.speak(
       '${prediction.spokenLabel} '
       'Toque para escanear otro billete. '
@@ -65,6 +76,7 @@ class BanknoteProvider extends ChangeNotifier {
 
   @override
   void dispose() {
+    _cameraService.dispose();
     _speechService.stop();
     super.dispose();
   }

@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mexican_banknote_recognition/constants/app_colors.dart';
@@ -18,17 +19,22 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<BanknoteProvider>().announce('Escaneando billete.');
-      _startScan();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initialize());
+  }
+
+  Future<void> _initialize() async {
+    await context.read<BanknoteProvider>().initializeCamera();
+    if (!mounted) return;
+    context.read<BanknoteProvider>().announce('Escaneando billete.');
+    _startScan();
   }
 
   Future<void> _startScan() async {
     final BanknotePrediction prediction =
         await context.read<BanknoteProvider>().simulateRecognition();
     if (!mounted) return;
-    Navigator.of(context).pushReplacementNamed(AppRoutes.result, arguments: prediction);
+    Navigator.of(context)
+        .pushReplacementNamed(AppRoutes.result, arguments: prediction);
   }
 
   @override
@@ -40,8 +46,25 @@ class _CameraScreenState extends State<CameraScreen> {
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              // Decorative hint — excluded from VoiceOver; the initState
-              // announcement already conveys this information.
+              // Live camera preview fills the background
+              Positioned.fill(
+                child: Consumer<BanknoteProvider>(
+                  builder: (BuildContext context, BanknoteProvider provider, _) {
+                    final CameraController? ctrl = provider.cameraController;
+                    if (ctrl != null && ctrl.value.isInitialized) {
+                      return CameraPreview(ctrl);
+                    }
+                    return const ColoredBox(color: AppColors.background);
+                  },
+                ),
+              ),
+              // Semi-transparent overlay so scanning UI is readable over the preview
+              Positioned.fill(
+                child: ColoredBox(
+                  color: Colors.black.withAlpha(90),
+                ),
+              ),
+              // Top hint — excluded from VoiceOver
               Positioned(
                 top: 24,
                 left: 0,
@@ -51,20 +74,19 @@ class _CameraScreenState extends State<CameraScreen> {
                     AppStrings.scanningAreaHint,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      color: AppColors.subtle,
-                      fontSize: 16,
+                      color: Colors.white,
+                      fontSize: 36,
                     ),
                   ),
                 ),
               ),
-              // liveRegion: true makes VoiceOver re-read this node whenever
-              // its content changes, so state updates are announced automatically.
+              // Scanning indicator — liveRegion announces state changes
               Semantics(
                 liveRegion: true,
                 label: AppStrings.scanningInstruction,
                 child: const ExcludeSemantics(child: _ScanningIndicator()),
               ),
-              // The animated waveform is purely visual — no semantic value.
+              // Animated waveform — purely visual
               const Positioned(
                 bottom: 48,
                 left: 0,
@@ -103,7 +125,7 @@ class _ScanningIndicator extends StatelessWidget {
               AppStrings.scanningLabel,
               style: TextStyle(
                 color: AppColors.scanning,
-                fontSize: 24,
+                fontSize: 48,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -116,8 +138,8 @@ class _ScanningIndicator extends StatelessWidget {
             AppStrings.scanningInstruction,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppColors.subtle,
-              fontSize: 18,
+              color: Colors.white70,
+              fontSize: 36,
               height: 1.4,
             ),
           ),

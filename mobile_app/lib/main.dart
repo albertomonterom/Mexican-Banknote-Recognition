@@ -24,18 +24,12 @@ class HablaBilleteApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Habla Billete',
         theme: ThemeData(
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
           scaffoldBackgroundColor: AppColors.background,
-          colorScheme: const ColorScheme.dark(
+          colorScheme: const ColorScheme.light(
             primary: AppColors.primary,
             secondary: AppColors.accent,
             surface: AppColors.surface,
-          ),
-          appBarTheme: const AppBarTheme(
-            backgroundColor: AppColors.background,
-            foregroundColor: AppColors.onBackground,
-            centerTitle: true,
-            elevation: 0,
           ),
           useMaterial3: true,
         ),

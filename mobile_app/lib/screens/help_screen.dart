@@ -24,7 +24,7 @@ class HelpScreen extends StatelessWidget {
               Text(
                 AppStrings.helpDescription,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.onBackground, fontSize: 20, height: 1.4),
+                style: TextStyle(color: AppColors.onBackground, fontSize: 28, height: 1.4),
               ),
               SizedBox(height: 24),
               _HelpCard(
@@ -70,7 +70,7 @@ class _HelpCard extends StatelessWidget {
             title,
             style: const TextStyle(
               color: AppColors.primary,
-              fontSize: 20,
+              fontSize: 28,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -79,7 +79,7 @@ class _HelpCard extends StatelessWidget {
             description,
             style: const TextStyle(
               color: AppColors.onSurface,
-              fontSize: 18,
+              fontSize: 26,
               height: 1.4,
             ),
           ),

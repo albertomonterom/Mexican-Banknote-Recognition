@@ -36,10 +36,9 @@ class ResultScreen extends StatelessWidget {
                     Container(
                       width: 80,
                       height: 80,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.scanningBg,
                         shape: BoxShape.circle,
-                        border: Border.all(color: AppColors.scanning, width: 2),
                       ),
                       child: const Icon(
                         Icons.check,
@@ -55,7 +54,7 @@ class ResultScreen extends StatelessWidget {
                           '\$${prediction.denomination}',
                           style: const TextStyle(
                             color: AppColors.onBackground,
-                            fontSize: 80,
+                            fontSize: 144,
                             fontWeight: FontWeight.w800,
                             letterSpacing: -2,
                           ),
@@ -67,20 +66,20 @@ class ResultScreen extends StatelessWidget {
                       AppStrings.pesos,
                       style: TextStyle(
                         color: AppColors.subtle,
-                        fontSize: 22,
+                        fontSize: 48,
                       ),
                     ),
                     const SizedBox(height: 56),
                     const Text(
                       AppStrings.resultTapHint,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: AppColors.subtle, fontSize: 16),
+                      style: TextStyle(color: AppColors.subtle, fontSize: 32),
                     ),
                     const SizedBox(height: 8),
                     const Text(
                       AppStrings.resultDoubleTapHint,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: AppColors.subtle, fontSize: 16),
+                      style: TextStyle(color: AppColors.subtle, fontSize: 32),
                     ),
                   ],
                 ),

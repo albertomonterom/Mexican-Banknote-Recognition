@@ -43,9 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: AppColors.onBackground,
-                      fontSize: 38,
+                      fontSize: 80,
                       fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5,
+                      letterSpacing: -1,
                     ),
                   ),
                   const SizedBox(height: 28),
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColors.subtle,
-                        fontSize: 18,
+                        fontSize: 40,
                         height: 1.5,
                       ),
                     ),
