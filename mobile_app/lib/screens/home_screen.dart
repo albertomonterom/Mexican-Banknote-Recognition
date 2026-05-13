@@ -35,33 +35,35 @@ class _HomeScreenState extends State<HomeScreen> {
           behavior: HitTestBehavior.opaque,
           child: ExcludeSemantics(
             child: SizedBox.expand(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    AppStrings.appName,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppColors.onBackground,
-                      fontSize: 80,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        AppStrings.appName,
+                        style: const TextStyle(
+                          color: AppColors.onBackground,
+                          fontSize: 64,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: -1.5,
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 28),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 48),
-                    child: Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       AppStrings.homeTapHint,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColors.subtle,
-                        fontSize: 40,
+                        fontSize: 24,
                         height: 1.5,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

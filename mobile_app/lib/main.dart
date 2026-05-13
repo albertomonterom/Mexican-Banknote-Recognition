@@ -30,6 +30,8 @@ class HablaBilleteApp extends StatelessWidget {
             primary: AppColors.primary,
             secondary: AppColors.accent,
             surface: AppColors.surface,
+            onPrimary: Colors.white,
+            onSurface: AppColors.onSurface,
           ),
           useMaterial3: true,
         ),

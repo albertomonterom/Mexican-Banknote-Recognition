@@ -9,7 +9,7 @@ class AppStrings {
   static const String homeSemantic = 'Toque para escanear un billete';
 
   // Camera / Scanning
-  static const String scanningAreaHint = 'Toda esta área es la cámara activa';
+  static const String scanningFrameHint = 'Centra el billete en el marco';
   static const String scanningLabel = 'Escaneando...';
   static const String scanningInstruction = 'Coloque el billete frente a la cámara';
 
