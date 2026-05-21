@@ -37,6 +37,10 @@ mobile_app/ios/.symlinks/
 mobile_app/ios/Flutter/Flutter.framework
 mobile_app/ios/Flutter/Flutter.podspec
 
+# macOS
+mobile_app/macos/libtensorflowlite_c-mac.dylib
+mobile_app/macos/Podfile.lock
+
 # Android
 mobile_app/android/.gradle/
 mobile_app/android/app/build/
