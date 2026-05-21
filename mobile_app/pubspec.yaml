@@ -13,6 +13,9 @@ dependencies:
   provider: ^6.1.2
   flutter_tts: ^4.0.0
   camera: ^0.11.0
+  tflite_flutter: ^0.11.0
+  image: ^4.0.0
+  camera_macos: ^0.0.9
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +24,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/modelo_billetes_fp32.tflite
+    - assets/class_names.txt

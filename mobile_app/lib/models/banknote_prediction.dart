@@ -1,31 +1,44 @@
 class BanknotePrediction {
   const BanknotePrediction({
-    required this.label,
     required this.denomination,
     required this.confidence,
     required this.spokenLabel,
-    required this.source,
-    required this.detectedAt,
+    required this.isDetected,
   });
 
-  final String label;
   final String denomination;
   final double confidence;
   final String spokenLabel;
-  final String source;
-  final DateTime detectedAt;
+  final bool isDetected;
 
-  String get confidenceAsPercent => '${(confidence * 100).toStringAsFixed(0)}%';
-
-  factory BanknotePrediction.fakeHundredPesos() {
-    final DateTime now = DateTime.now();
+  /// Real prediction from the TFLite model.
+  factory BanknotePrediction.fromClassification(
+      String className, double confidence) {
     return BanknotePrediction(
-      label: 'Billete de 100 pesos',
+      denomination: className,
+      confidence: confidence,
+      spokenLabel: 'Billete de $className pesos.',
+      isDetected: true,
+    );
+  }
+
+  /// Model returned no_billete class or confidence too low.
+  factory BanknotePrediction.noBanknote() {
+    return const BanknotePrediction(
+      denomination: 'no_billete',
+      confidence: 0.0,
+      spokenLabel: 'No se detectó ningún billete. Intente nuevamente.',
+      isDetected: false,
+    );
+  }
+
+  /// Kept for tests / previews while the real model is not yet integrated.
+  factory BanknotePrediction.fakeHundredPesos() {
+    return const BanknotePrediction(
       denomination: '100',
       confidence: 0.96,
       spokenLabel: 'Billete de 100 pesos.',
-      source: 'simulado',
-      detectedAt: now,
+      isDetected: true,
     );
   }
 }

@@ -28,5 +28,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Se necesita la cámara para identificar billetes mexicanos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Se requiere acceso al micrófono para el uso de la cámara.</string>
 </dict>
 </plist>

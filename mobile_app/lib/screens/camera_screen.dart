@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:math' as math;
 import 'package:camera/camera.dart';
+import 'package:camera_macos/camera_macos.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:mexican_banknote_recognition/constants/app_colors.dart';
@@ -16,6 +18,8 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
+  bool _scanStarted = false;
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +30,16 @@ class _CameraScreenState extends State<CameraScreen> {
     await context.read<BanknoteProvider>().initializeCamera();
     if (!mounted) return;
     context.read<BanknoteProvider>().announce('Escaneando billete.');
+    if (!Platform.isMacOS) _startScan();
+  }
+
+  Future<void> _onMacOSCameraReady(CameraMacOSController ctrl) async {
+    context.read<BanknoteProvider>().setMacOSController(ctrl);
+    if (_scanStarted) return;
+    _scanStarted = true;
+    // Give the camera sensor ~1.5 s to warm up before the first capture
+    await Future<void>.delayed(const Duration(milliseconds: 1500));
+    if (!mounted) return;
     _startScan();
   }
 
@@ -33,8 +47,37 @@ class _CameraScreenState extends State<CameraScreen> {
     final BanknotePrediction prediction =
         await context.read<BanknoteProvider>().simulateRecognition();
     if (!mounted) return;
+
+    if (!prediction.isDetected) {
+      await Future<void>.delayed(const Duration(milliseconds: 800));
+      if (!mounted) return;
+      _startScan();
+      return;
+    }
+
     Navigator.of(context)
         .pushReplacementNamed(AppRoutes.result, arguments: prediction);
+  }
+
+  Widget _buildCameraPreview() {
+    if (Platform.isMacOS) {
+      return CameraMacOSView(
+        fit: BoxFit.cover,
+        cameraMode: CameraMacOSMode.photo,
+        onCameraInizialized: _onMacOSCameraReady,
+        onCameraLoading: (_) => const ColoredBox(color: Colors.black),
+      );
+    }
+
+    return Consumer<BanknoteProvider>(
+      builder: (_, BanknoteProvider provider, __) {
+        final CameraController? ctrl = provider.cameraController;
+        if (ctrl != null && ctrl.value.isInitialized) {
+          return CameraPreview(ctrl);
+        }
+        return const ColoredBox(color: Colors.black);
+      },
+    );
   }
 
   @override
@@ -43,19 +86,7 @@ class _CameraScreenState extends State<CameraScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: <Widget>[
-          // Full-screen camera preview
-          Positioned.fill(
-            child: Consumer<BanknoteProvider>(
-              builder: (_, BanknoteProvider provider, __) {
-                final CameraController? ctrl = provider.cameraController;
-                if (ctrl != null && ctrl.value.isInitialized) {
-                  return CameraPreview(ctrl);
-                }
-                return const ColoredBox(color: Colors.black);
-              },
-            ),
-          ),
-          // Purple sonar rings centred on screen — VoiceOver live region
+          Positioned.fill(child: _buildCameraPreview()),
           Center(
             child: Semantics(
               liveRegion: true,
@@ -125,7 +156,6 @@ class _SonarPainter extends CustomPainter {
     final Offset center = size.center(Offset.zero);
     final double maxR = math.min(size.width, size.height) / 2;
 
-    // Small solid dot at center
     canvas.drawCircle(
       center,
       6,

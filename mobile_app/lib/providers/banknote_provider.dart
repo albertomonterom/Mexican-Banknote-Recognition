@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:camera_macos/camera_macos.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mexican_banknote_recognition/models/banknote_prediction.dart';
 import 'package:mexican_banknote_recognition/services/camera_service.dart';
@@ -11,7 +12,7 @@ class BanknoteProvider extends ChangeNotifier {
     MlModelService? mlModelService,
     SpeechService? speechService,
   })  : _cameraService = cameraService ?? CameraService(),
-        _mlModelService = mlModelService ?? const MlModelService(),
+        _mlModelService = mlModelService ?? MlModelService(),
         _speechService = speechService ?? SpeechService();
 
   final CameraService _cameraService;
@@ -29,11 +30,19 @@ class BanknoteProvider extends ChangeNotifier {
   String? get statusMessage => _statusMessage;
   CameraController? get cameraController => _cameraService.controller;
 
+  void setMacOSController(CameraMacOSController ctrl) {
+    _cameraService.setMacOSController(ctrl);
+  }
+
   Future<void> initializeCamera() async {
     _cameraReady = false;
     notifyListeners();
-    await _cameraService.initialize();
-    _cameraReady = true;
+    try {
+      await _cameraService.initialize();
+      _cameraReady = true;
+    } catch (_) {
+      _cameraReady = false;
+    }
     notifyListeners();
   }
 
@@ -42,12 +51,23 @@ class BanknoteProvider extends ChangeNotifier {
     _statusMessage = 'Capturando billete...';
     notifyListeners();
 
-    final String framePath = await _cameraService.captureFrame();
-    final BanknotePrediction prediction =
-        await _mlModelService.recognizeBanknote(framePath);
+    BanknotePrediction prediction;
+    try {
+      final String framePath = await _cameraService.captureFrame();
+      prediction = await _mlModelService.recognizeBanknote(framePath);
+    } catch (_) {
+      prediction = BanknotePrediction.noBanknote();
+    }
+
+    _isProcessing = false;
+    notifyListeners();
+
+    if (!prediction.isDetected) {
+      await _speechService.speak(prediction.spokenLabel);
+      return prediction;
+    }
 
     _lastPrediction = prediction;
-    _isProcessing = false;
     _statusMessage = prediction.spokenLabel;
     notifyListeners();
 
