@@ -10,7 +10,7 @@ class MlModelService {
   }
 
   static const int _inputSize = 224;
-  static const double _confidenceThreshold = 0.60;
+  static const double _confidenceThreshold = 0.90;
 
   late final Future<void> _ready;
   Interpreter? _interpreter;

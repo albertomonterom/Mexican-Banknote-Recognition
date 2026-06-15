@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:camera/camera.dart';
 import 'package:camera_macos/camera_macos.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:provider/provider.dart';
 import 'package:mexican_banknote_recognition/constants/app_colors.dart';
 import 'package:mexican_banknote_recognition/constants/app_strings.dart';
@@ -19,6 +20,9 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   bool _scanStarted = false;
+  String? _lastDetectedDenomination;
+  int _noDetectCount = 0;
+  static const int _hintEvery = 5;
 
   @override
   void initState() {
@@ -49,12 +53,27 @@ class _CameraScreenState extends State<CameraScreen> {
     if (!mounted) return;
 
     if (!prediction.isDetected) {
+      _lastDetectedDenomination = null;
+      _noDetectCount++;
+      if (_noDetectCount % _hintEvery == 0) {
+        context.read<BanknoteProvider>().announce(
+              'Acerque el billete a la cámara.',
+            );
+      }
       await Future<void>.delayed(const Duration(milliseconds: 800));
       if (!mounted) return;
       _startScan();
       return;
     }
 
+    // Require two consecutive captures of the same denomination
+    if (_lastDetectedDenomination != prediction.denomination) {
+      _lastDetectedDenomination = prediction.denomination;
+      _startScan();
+      return;
+    }
+
+    HapticFeedback.heavyImpact();
     Navigator.of(context)
         .pushReplacementNamed(AppRoutes.result, arguments: prediction);
   }

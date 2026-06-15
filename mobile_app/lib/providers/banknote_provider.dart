@@ -63,7 +63,6 @@ class BanknoteProvider extends ChangeNotifier {
     notifyListeners();
 
     if (!prediction.isDetected) {
-      await _speechService.speak(prediction.spokenLabel);
       return prediction;
     }
 
